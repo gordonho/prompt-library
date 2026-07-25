@@ -77,3 +77,23 @@ git clone https://github.com/gordonho/prompt-library.git
 ## License
 
 MIT
+## 教程
+
+按 prompt 分门别类的 step-by-step 教程：
+
+📖 [`tutorials/`](./tutorials/)
+- [`general-self-reflect.md`](./tutorials/general-self-reflect.md)
+- [`hermes-delegation.md`](./tutorials/hermes-delegation.md)
+- [`monitoring-watchdog.md`](./tutorials/monitoring-watchdog.md)
+- [`extraction-web-article.md`](./tutorials/extraction-web-article.md)
+- [`automation-cron.md`](./tutorials/automation-cron.md)
+- [`automation-sync.md`](./tutorials/automation-sync.md)
+- [`automation-chat.md`](./tutorials/automation-chat.md)
+
+每个教程包含：
+- 何时用 / 何时不用
+- 30 秒上手（copy-paste ready）
+- 3-5 个实战场景
+- 常见错误 + 反例
+- ASCII 流程图 + 状态机
+- 相关模板引用
