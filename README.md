@@ -5,6 +5,8 @@
 > 🌐 **GitHub Pages 站点**：[**gordonho.github.io/prompt-library**](https://gordonho.github.io/prompt-library/)
 >
 > 📦 **GitHub 仓库**：[gordonho/prompt-library](https://github.com/gordonho/prompt-library)
+>
+> 📚 **awesome 资源导航**：[awesome-prompts.md](./awesome-prompts.md) — 2026 GitHub 万级 + 千级 prompt 资源合集
 
 ---
 
@@ -23,6 +25,7 @@
 - ⏰ [cron](https://gordonho.github.io/prompt-library/prompts/automation/cron.html)
 - 🔄 [sync-notion-obsidian](https://gordonho.github.io/prompt-library/prompts/automation/sync-notion-obsidian.html)
 - 💬 [chat-platforms](https://gordonho.github.io/prompt-library/prompts/automation/chat-platforms.html)
+- 📚 [awesome-prompts](https://gordonho.github.io/prompt-library/awesome-prompts.html)
 
 ---
 
@@ -31,6 +34,7 @@
 ```
 prompt-library/
 ├── README.md                      ← 仓库首页
+├── awesome-prompts.md             ← 外部 prompt 资源导航
 ├── prompts/
 │   ├── general/                    # 通用 LLM prompt
 │   │   ├── self-reflect.md         # 结构化 + 反思（87% 准确率）
@@ -66,9 +70,9 @@ prompt-library/
 
 | | |
 |---|---|
-| **文件数** | 23（markdown）+ 9（html site）|
-| **总大小** | ~80 KB |
-| **commit** | 9 |
+| **文件数** | 23（markdown）+ 16（html site）|
+| **总大小** | ~100 KB |
+| **commit** | 11+ |
 | **协议** | MIT |
 | **Pages** | 自动部署（push → main → 30s 上线）|
 
@@ -88,6 +92,8 @@ prompt-library/
 我要定时跑脚本 + 推送           → cron
 我要把内容存 Notion / Obsidian  → sync-notion-obsidian
 我要推送到飞书 / 企微 / Slack   → chat-platforms
+
+我想找更多 prompt 资源         → awesome-prompts
 ```
 
 ---
@@ -115,6 +121,19 @@ prompt-library/
 - **[sync-notion-obsidian.md](./prompts/automation/sync-notion-obsidian.md)** — Notion / Obsidian 同步
 - **[chat-platforms.md](./prompts/automation/chat-platforms.md)** — 飞书 / 企微 / Slack / Telegram
 - **[examples.md](./prompts/automation/examples.md)** / **[sync-examples.md](./prompts/automation/sync-examples.md)** / **[chat-examples.md](./prompts/automation/chat-examples.md)** — 实战案例
+
+---
+
+## 🌐 外部资源导航
+
+📚 **[awesome-prompts.md](./awesome-prompts.md)** — 2026 GitHub 万级 + 千级 prompt 资源合集。
+
+**收录 11 个仓库**，3 个 Tier：
+- **Tier 1 (10K+ stars)**：f/prompts.chat, PlexPt-zh, anthropics/prompt-eng-interactive-tutorial
+- **Tier 2 (1K-10K stars)**：NirDiamant, thinkingjimmy, wesammustafa, EgoAlpha, EmbraceAGI
+- **Tier 3 (中文宝藏)**：L1Xu4n, jianzhnie
+
+**包含**：决策树、按场景推荐、"先学这 3 个"。
 
 ---
 
@@ -184,6 +203,7 @@ cat prompts/general/self-reflect.md
 - `monitoring/watchdog.md` — 我们写的 `buddywatch.py`
 - `extraction/web-article.md` — 微信公众号 + Sina A股数据抓取
 - `automation/*` — Hermes cron / Obsidian / 多 IM 平台
+- `awesome-prompts.md` — GitHub API 实时搜索整理
 
 ---
 
