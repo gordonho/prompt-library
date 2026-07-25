@@ -2,36 +2,52 @@
 
 通用 prompt 模板集合，由 Hermes Agent 自动整理。
 
-## 目录
+## 目录结构
 
-### [general/](./prompts/general/)
-通用 LLM prompt 模板。
+```
+prompts/
+├── general/           # 通用 LLM prompt
+│   ├── self-reflect.md
+│   └── examples.md
+├── hermes/            # Hermes Agent / 子 agent 跨调
+│   ├── delegation.md
+│   └── examples.md
+├── monitoring/        # 监控 / 守护进程
+│   ├── watchdog.md
+│   └── examples.md
+├── extraction/        # 数据提取 / 文章分析
+│   ├── web-article.md
+│   └── examples.md
+└── automation/        # 自动化
+    ├── cron.md
+    ├── sync-notion-obsidian.md
+    ├── chat-platforms.md
+    └── examples.md  (+ sync-examples.md, chat-examples.md)
+```
 
-- [`self-reflect.md`](./prompts/general/self-reflect.md) — 结构化拆解 + 自我反思通用模板
-  - 主模板（结构化拆解 + 自我反思，二合一）
-  - 高级版（多解投票 + 反思，三合一）
-  - 极简版（1 句话）
-  - 适用场景对照表
-  - 验证依据（87% 准确率 + 2.8x Token 成本）
+## 每个目录的模板
 
-### [hermes/](./prompts/hermes/)
-Hermes Agent / OpenClaw / Claude Code / Codex 跨调用模板。
+### [general/](./prompts/general/) — 通用 LLM prompt
+- **`self-reflect.md`** — 结构化拆解 + 自我反思通用模板（87% 准确率）
+- **`examples.md`** — 4 个实战案例（技术决策 / 投资 / 法律 / 极简版）
 
-- [`delegation.md`](./prompts/hermes/delegation.md) — 委派子 agent 任务的标准模板
+### [hermes/](./prompts/hermes/) — Hermes / 子 agent 跨调
+- **`delegation.md`** — 委派任务给 OpenClaw / Claude Code / Codex 的模板
+- **`examples.md`** — 5 个实战案例（含反例）
 
-### [monitoring/](./prompts/monitoring/)
-监控 / 守护进程 / 健康检查模板。
+### [monitoring/](./prompts/monitoring/) — 监控 / 守护进程
+- **`watchdog.md`** — 健康检查 / 互救 watchdog 设计
+- **`examples.md`** — 4 个实战案例（含错的设计反例）
 
-- [`watchdog.md`](./prompts/monitoring/watchdog.md) — 智能监控进程设计
+### [extraction/](./prompts/extraction/) — 数据提取
+- **`web-article.md`** — 微信文章 / PDF / A股 / 关键词监控
+- **`examples.md`** — 4 个实战案例（含抓取陷阱）
 
-### [extraction/](./prompts/extraction/)
-数据提取 / 文章分析 / 结构化抽取模板。
-
-- [`web-article.md`](./prompts/extraction/web-article.md)
-  - 微信公众号文章提取
-  - PDF 表格抽取
-  - A 股行情综合判定
-  - 关键词监控 + 推送
+### [automation/](./prompts/automation/) — 自动化
+- **`cron.md`** — Hermes cron job 设计
+- **`sync-notion-obsidian.md`** — Notion / Obsidian 同步
+- **`chat-platforms.md`** — 飞书 / 企微 / Slack / Telegram 推送
+- **`examples.md`** / **`sync-examples.md`** / **`chat-examples.md`** — 实战案例
 
 ## 使用
 
@@ -39,14 +55,24 @@ Hermes Agent / OpenClaw / Claude Code / Codex 跨调用模板。
 git clone https://github.com/gordonho/prompt-library.git
 ```
 
-每个 prompt 都是 markdown 格式，直接复制使用即可。
+每个 prompt 都是 markdown 格式，直接复制使用。
+
+## 设计原则
+
+1. **实战验证** — 每个模板都来自真实 Hermes Agent 使用场景
+2. **可复用** — 不依赖特定工具，复制即可用
+3. **结构化** — 都有 输入 / 输出 / 限制 三个明确段
+4. **反例丰富** — 标出"不要做什么"，避免踩坑
 
 ## 来源
 
-由 Hermes Agent 在实际使用场景中验证后整理。
+由 Hermes Agent 在实际工作流中沉淀：
 
-- self-reflect: 灵感来自 Micro-Agent / Anthropic Self-Consistency / Llama 3.1 反思技巧
-- 其余：在 [Hermes Agent 实际使用中](https://github.com/NousResearch/hermes-agent) 沉淀
+- `general/self-reflect.md` — 灵感来自 Micro-Agent / Anthropic Self-Consistency / Llama 3.1 反思
+- `hermes/delegation.md` — Hermes ↔ OpenClaw 跨调实战
+- `monitoring/watchdog.md` — 我们写的 `buddywatch.py`
+- `extraction/web-article.md` — 微信公众号 + Sina A股数据抓取
+- `automation/*` — Hermes cron / Obsidian / 多 IM 平台
 
 ## License
 
