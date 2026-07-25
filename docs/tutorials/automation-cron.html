@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📖 教程：cron · Prompt Library</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>📖 教程：cron</h1>
+      <p>Hermes 定时任务 · 30 秒上手 + 实战 + cron 速查</p>
+    </header>
+
+    <section>
+      <h2>何时用</h2>
+      <ul>
+        <li>✅ A 股 / 监控 / 日报类定时任务</li>
+        <li>✅ "每天早上提醒我吃药"</li>
+        <li>✅ "每周日整理本周的 Notion"</li>
+        <li>❌ 一次性任务</li>
+        <li>❌ &lt; 5 分钟的频率（噪声）</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>30 秒上手</h2>
+      <pre class="code"><code>hermes cron create \
+  --name "任务名" \
+  --schedule "[cron 表达式]" \
+  --deliver qqbot \
+  --prompt "[任务描述]"</code></pre>
+    </section>
+
+    <section>
+      <h2>cron 表达式速查</h2>
+      <table>
+        <tr><th>表达式</th><th>含义</th></tr>
+        <tr><td><code>*/30 9-11,13-14 * * 1-5</code></td><td>工作日 9-11 / 13-14 段，每 30 分钟</td></tr>
+        <tr><td><code>25 9 * * 1-5</code></td><td>工作日 9:25 一次</td></tr>
+        <tr><td><code>30 15 * * 1-5</code></td><td>工作日 15:30 一次</td></tr>
+        <tr><td><code>0 23 * * *</code></td><td>每天 23:00</td></tr>
+        <tr><td><code>*/30 * * * *</code></td><td>每 30 分钟（24x7）</td></tr>
+      </table>
+      <p class="note">字段顺序：<code>分 时 日 月 周</code></p>
+    </section>
+
+    <section>
+      <h2>deliver 选项</h2>
+      <table>
+        <tr><th>值</th><th>行为</th></tr>
+        <tr><td><code>weixin</code></td><td>微信 iLink（限流严）</td></tr>
+        <tr class="highlight"><td><code>qqbot</code></td><td>QQ bot（<strong>推荐</strong>）</td></tr>
+        <tr><td><code>local</code></td><td>只存本地</td></tr>
+        <tr><td><code>all</code></td><td>多渠道</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>流程图</h2>
+      <pre class="code"><code>┌─────────────────┐
+│  hermes cron     │
+│  create          │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Cron 调度器      │
+│  按 schedule 触发 │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  执行 prompt      │
+│  (LLM agent turn) │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  跑脚本          │
+│  return output  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  deliver 到      │
+│  qqbot/weixin/.. │
+└─────────────────┘</code></pre>
+    </section>
+
+    <section>
+      <h2>prompt 设计的 3 条铁律</h2>
+      <ol>
+        <li><strong>告诉模型怎么跑脚本</strong> — "Just execute: X" 不要用 LLM 二次发挥</li>
+        <li><strong>告诉模型怎么处理输出</strong> — "return output verbatim" / "summarize"</li>
+        <li><strong>告诉模型什么时候静默</strong> — "Silent when no new posts"</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>完整教程</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/tutorials/automation-cron.md">GitHub: tutorials/automation-cron.md</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/automation/cron.md">模板: prompts/automation/cron.md</a></li>
+      </ul>
+    </section>
+  </div>
+  <script src="../static/search.js"></script>
+</body>
+</html>

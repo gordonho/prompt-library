@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📖 教程：watchdog · Prompt Library</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>📖 教程：watchdog</h1>
+      <p>常驻守护进程设计 · 30 秒上手 + 实战 + 流程图</p>
+    </header>
+
+    <section>
+      <h2>何时用</h2>
+      <ul>
+        <li>✅ 跑了关键服务（Hermes 网关 / 数据库 / 队列）</li>
+        <li>✅ launchd KeepAlive 不够（不能救 OOM / JS hang）</li>
+        <li>✅ 想要"静默优先"（失败才推用户）</li>
+        <li>❌ 普通 cron（用 cron 模板）</li>
+        <li>❌ 一次性任务</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>30 秒上手</h2>
+      <ol>
+        <li>写 watchdog 脚本（参考 <code>prompts/monitoring/watchdog.md</code>）</li>
+        <li>写 launchd plist（参考 <a href="../../prompts/monitoring/watchdog.html">watchdog 模板</a>）</li>
+        <li><code>launchctl load -w ~/Library/LaunchAgents/com.example.plist</code></li>
+        <li><code>tail -f ~/.local/log/mywatch.log</code> 看日志</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>状态机</h2>
+      <pre class="code"><code>IDLE ─probe→ HEALTHY ─probe→ HEALTHY
+                │
+                ↓ probe fail
+                HEALTHY → DEGRADED (fails=1)
+                              │
+                              ↓ probe fail
+                              DEGRADED (fails=2)
+                              ...
+                              DEGRADED (fails=5)
+                                              │
+                                              ↓
+                                              TRIGGERED (cooldown 5min)
+                                                              │
+                                                              ↓ cooldown end
+                                                              HEALTHY</code></pre>
+    </section>
+
+    <section>
+      <h2>实战：Hermes ↔ OpenClaw 互救</h2>
+      <pre class="code"><code>INTERVAL = 60        # 秒
+THRESHOLD = 5        # 累计失败
+COOLDOWN = 300       # 重启后冷却</code></pre>
+      <p>实际跑过的场景（已救活 Hermes 网关 1 次）：</p>
+      <pre class="code"><code>13:07:46  Hermes failed probe (5/5)
+13:07:46  Hermes triggering force restart
+13:07:47  Hermes kickstart dispatched</code></pre>
+    </section>
+
+    <section>
+      <h2>关键陷阱</h2>
+      <table>
+        <tr><th>陷阱</th><th>解决</th></tr>
+        <tr><td>launchd 进程 PATH 缺 venv</td><td>用绝对路径</td></tr>
+        <tr><td>探针正常时也推送</td><td>完全静默</td></tr>
+        <tr><td>探针失败立即重启</td><td>累计阈值 + 冷却</td></tr>
+        <tr><td>多个 watchdog 互相监视</td><td>单 watchdog + launchd</td></tr>
+        <tr><td>用 cron 跑 watchdog</td><td>watchdog 是常驻进程</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>完整教程</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/tutorials/monitoring-watchdog.md">GitHub: tutorials/monitoring-watchdog.md</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/monitoring/watchdog.md">模板: prompts/monitoring/watchdog.md</a></li>
+      </ul>
+    </section>
+  </div>
+  <script src="../static/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📖 教程：web-article · Prompt Library</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>📖 教程：web-article</h1>
+      <p>数据提取 · 30 秒上手 + 实战 + 流程图</p>
+    </header>
+
+    <section>
+      <h2>何时用</h2>
+      <ul>
+        <li>✅ 抓微信公众号文章（mp.weixin.qq.com）</li>
+        <li>✅ 抓政府 / 考试院 / 高校官网</li>
+        <li>✅ PDF 表格抽取</li>
+        <li>✅ A 股实时数据 + 技术指标</li>
+        <li>✅ 监控关键词 + 推送</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>30 秒上手</h2>
+      <p>微信公众号文章：</p>
+      <pre class="code"><code>~/.local/bin/wx_article.py "https://mp.weixin.qq.com/s/XXX" --keyword "中山大学"</code></pre>
+      <p>政府网站监控：</p>
+      <pre class="code"><code>~/.local/bin/gk_monitor.py</code></pre>
+      <p>A 股实时：</p>
+      <pre class="code"><code>~/.local/bin/stock_push.py</code></pre>
+    </section>
+
+    <section>
+      <h2>流程图</h2>
+      <pre class="code"><code>   URL / API / PDF
+        │
+        ▼
+   ┌──────────┐
+   │  fetch()  │  HTTP/curl/requests
+   └────┬─────┘
+        │ raw HTML/JSON/PDF text
+        ▼
+   ┌──────────┐
+   │  parse()  │  正则 / JSON / pdfplumber
+   └────┬─────┘
+        │ dict {title, body, date, ...}
+        ▼
+   ┌──────────┐
+   │  render() │  markdown 模板
+   └────┬─────┘
+        │
+        ▼
+   ┌──────────┐
+   │  push    │  WeChat / QQ bot / Slack
+   └──────────┘</code></pre>
+    </section>
+
+    <section>
+      <h2>关键陷阱</h2>
+      <table>
+        <tr><th>陷阱</th><th>解决</th></tr>
+        <tr><td>公众号标题在 og:title 不在 title</td><td>用 og:title 优先</td></tr>
+        <tr><td>公众号昵称是 JSON-escaped (\x22)</td><td>正则匹配 \x22</td></tr>
+        <tr><td>公众号发布时间 URL-encoded</td><td>正则匹配 %22publish_time%22%3A(\d+)</td></tr>
+        <tr><td>政府网站 URL 是完整不是相对</td><td>正则匹配 https?:// 可选</td></tr>
+        <tr><td>HTML 标签混入文本</td><td>re.sub(r'&lt;[^&gt;]+&gt;', '\n')</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>A 股 Sina API</h2>
+      <pre class="code"><code># 实时
+GET https://hq.sinajs.cn/list=sh600036,sz002001
+
+# K 线 (60 天)
+GET http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/
+    CN_MarketData.getKLineData?symbol=sh600036&scale=240&ma=no&datalen=60</code></pre>
+    </section>
+
+    <section>
+      <h2>完整教程</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/tutorials/extraction-web-article.md">GitHub: tutorials/extraction-web-article.md</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/extraction/web-article.md">模板: prompts/extraction/web-article.md</a></li>
+      </ul>
+    </section>
+  </div>
+  <script src="../static/search.js"></script>
+</body>
+</html>

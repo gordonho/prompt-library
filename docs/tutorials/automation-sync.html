@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📖 教程：sync-notion-obsidian · Prompt Library</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>📖 教程：sync-notion-obsidian</h1>
+      <p>Notion / Obsidian 同步 · 30 秒上手 + 实战 + 双向同步策略</p>
+    </header>
+
+    <section>
+      <h2>何时用</h2>
+      <ul>
+        <li>✅ 保存公众号文章到本地 Obsidian</li>
+        <li>✅ 同步日记到 Notion（团队可见）</li>
+        <li>✅ 跨平台双向同步</li>
+        <li>❌ 一次性保存（直接用 write_file）</li>
+        <li>❌ 不希望同步的内容（私密度高）</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>30 秒上手</h2>
+      <p>保存到 Obsidian：</p>
+      <pre class="code"><code>import os
+from datetime import datetime
+
+vault = os.path.expanduser("~/Documents/ObsidianVault")
+folder = "Articles"
+filename = f"{datetime.now().strftime('%Y-%m-%d')}-title-slug.md"
+path = os.path.join(vault, folder, filename)
+
+content = f"""---
+title: {title}
+date: {datetime.now().strftime('%Y-%m-%d')}
+tags: [{tags}]
+source: {source}
+url: {url}
+---
+
+{body}
+"""
+
+os.makedirs(os.path.dirname(path), exist_ok=True)
+with open(path, "w") as f:
+    f.write(content)</code></pre>
+    </section>
+
+    <section>
+      <h2>双向同步策略</h2>
+      <table>
+        <tr><th>本地有更新</th><th>Notion 有更新</th><th>默认行为</th></tr>
+        <tr><td>✅</td><td>❌</td><td>推 Notion</td></tr>
+        <tr><td>❌</td><td>✅</td><td>拉本地</td></tr>
+        <tr class="highlight"><td>✅</td><td>✅</td><td>提示用户选</td></tr>
+      </table>
+      <p class="note">用 frontmatter <code>notion_id</code> 字段做幂等键</p>
+    </section>
+
+    <section>
+      <h2>vault 结构建议</h2>
+      <pre class="code"><code>~/Documents/ObsidianVault/
+├── 0-Inbox/                # 临时收件
+├── Daily/                  # 每日笔记
+├── Articles/               # 收藏的文章
+├── Projects/               # 长期项目
+├── Reference/              # 参考资料
+├── Templates/              # 模板
+└── Index.md                # 索引</code></pre>
+    </section>
+
+    <section>
+      <h2>反例</h2>
+      <ul>
+        <li>❌ 覆盖原文件不检查</li>
+        <li>❌ 硬编码 vault 路径</li>
+        <li>❌ 同步时漏掉代码块（Notion 用 <code>code</code> block，不是 paragraph）</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>完整教程</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/tutorials/automation-sync.md">GitHub: tutorials/automation-sync.md</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/automation/sync-notion-obsidian.md">模板: prompts/automation/sync-notion-obsidian.md</a></li>
+      </ul>
+    </section>
+  </div>
+  <script src="../static/search.js"></script>
+</body>
+</html>
