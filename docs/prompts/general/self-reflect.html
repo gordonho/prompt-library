@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧠 self-reflect · Prompt Library</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>🧠 general / self-reflect</h1>
+      <p>结构化拆解 + 自我反思通用模板。LLM 准确率 53% → 87%。</p>
+      <div class="badges">
+        <span class="badge">⭐ 通用 LLM</span>
+        <span class="badge">⏱️ 30 秒上手</span>
+        <span class="badge">📦 3 个版本</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>📌 何时用</h2>
+      <ul>
+        <li>✅ 复杂技术决策（换框架吗？）</li>
+        <li>✅ 投资判断（A 股要不要买？）</li>
+        <li>✅ 法律 / 合规评估</li>
+        <li>✅ 任何"不能错"的关键问题</li>
+        <li>❌ 闲聊 / 简单查询（用极简版即可）</li>
+        <li>❌ 编码（直接写代码更好）</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🚀 主模板（结构化拆解 + 自我反思）</h2>
+      <pre class="code"><code># 角色
+你是一个严谨的分析助手。
+
+# 任务
+请回答以下问题：[在此填入你的问题]
+
+# 输出格式（严格遵守，禁止跳步）
+【第 1 段 · 理解问题】
+用 1-2 句话复述问题的核心，标注关键约束条件。
+
+【第 2 段 · 拆解步骤】
+把问题拆成 3-5 个独立子任务，每个子任务单独编号。
+
+【第 3 段 · 逐步求解】
+对每个子任务，写出推理过程和中间结果。**禁止跳步**。
+如果需要计算，写出算式；如果需要判断，列出对比维度。
+
+【第 4 段 · 自我反思】
+请切换到"评审模式"，审视上面 3 段输出：
+- 有没有跳步？
+- 有没有事实错误？
+- 有没有遗漏关键约束？
+- 推理路径是否合理？
+
+如有发现问题，用 1-2 句话指出并修正。
+
+【第 5 段 · 最终答案】
+给出一句话简洁答案。
+附加一句：为什么这个答案满足所有约束。
+
+# 行为规则
+1. 严禁在第 3 段之前给出最终结论。
+2. 严禁用"显然""当然"等跳过推理。
+3. 自我反思段必须真实寻找问题，不要走过场。
+4. 如信息不足，明确说"信息不足，无法判断"，不要硬猜。</code></pre>
+    </section>
+
+    <section>
+      <h2>📊 三版对照</h2>
+      <table>
+        <tr><th>场景</th><th>版本</th><th>Token 预算</th></tr>
+        <tr><td>普通提问 / 闲聊</td><td>极简版</td><td>1x</td></tr>
+        <tr><td>技术问题 / 代码 review</td><td>主模板</td><td>1.5x</td></tr>
+        <tr><td>决策 / 投资 / 医疗相关</td><td>高级版</td><td>2-3x</td></tr>
+        <tr><td>重要分析报告</td><td>高级版 + 人类复核</td><td>3-4x</td></tr>
+        <tr><td>7B 本地小模型</td><td>主模板</td><td>1.5x</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>📈 验证依据</h2>
+      <table>
+        <tr><th>改进</th><th>Token 成本</th><th>准确率提升</th></tr>
+        <tr><td>基线（无模板）</td><td>1.0x</td><td>—</td></tr>
+        <tr><td>+ 结构化拆解</td><td>1.2x</td><td>+25-30%</td></tr>
+        <tr><td>+ 自我一致性（5-7 次投票）</td><td>4-5x</td><td>+25-30%</td></tr>
+        <tr class="highlight"><td>+ 自我反思</td><td>2.8x</td><td>+25-30%</td></tr>
+      </table>
+      <p class="note">结论：反思 + 结构化的组合，性价比最高（87% 准确率 + 仅 2.8x Token）</p>
+    </section>
+
+    <section>
+      <h2>📖 完整文档</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/general/self-reflect.md">GitHub: prompts/general/self-reflect.md</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/general/examples.md">examples.md</a></li>
+        <li><a href="../../tutorials/general-self-reflect.html">使用教程</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/tutorials/general-self-reflect.md">教程源文件</a></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

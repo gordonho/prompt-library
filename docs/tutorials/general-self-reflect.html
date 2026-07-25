@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧠 教程：self-reflect · Prompt Library</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>📖 教程：self-reflect</h1>
+      <p>30 秒上手 + 实战案例 + 流程图</p>
+    </header>
+
+    <section>
+      <h2>30 秒上手</h2>
+      <ol>
+        <li>复制 <a href="https://github.com/gordonho/prompt-library/blob/main/prompts/general/self-reflect.md">主模板</a></li>
+        <li>把 <code>[在此填入你的问题]</code> 替换成你的真实问题</li>
+        <li>粘贴到任何 LLM（ChatGPT / Claude / 本地 7B / Hermes）</li>
+        <li>让模型严格按 5 段输出</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>流程图</h2>
+      <pre class="code"><code>┌─────────────────┐
+│  复制主模板      │
+│  替换 [问题]     │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  粘贴到 LLM      │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  LLM 严格 5 段输出 │
+├─────────────────┤
+│ 1. 理解问题      │
+│ 2. 拆解步骤      │
+│ 3. 逐步求解      │
+│ 4. 自我反思      │
+│ 5. 最终答案      │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  你评估质量       │
+│  接受 / 再问       │
+└─────────────────┘</code></pre>
+    </section>
+
+    <section>
+      <h2>三版选择</h2>
+      <table>
+        <tr><th>场景</th><th>版本</th></tr>
+        <tr><td>闲聊、查资料</td><td>极简版（1 句话）</td></tr>
+        <tr><td>普通技术问题</td><td>主模板</td></tr>
+        <tr><td>投资 / 合规 / 关键决策</td><td>高级版</td></tr>
+        <tr><td>写代码 / 调脚本</td><td>不需要这个模板</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>验证你的使用</h2>
+      <ul>
+        <li>模型严格按 5 段输出了？</li>
+        <li>第 3 段没有跳步？</li>
+        <li>第 4 段真的找出了问题？</li>
+        <li>最终答案有依据？</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>完整教程</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/tutorials/general-self-reflect.md">GitHub: tutorials/general-self-reflect.md</a></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

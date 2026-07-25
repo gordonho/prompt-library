@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Library · Hermes Agent</title>
+  <meta name="description" content="通用 prompt 模板集合，由 Hermes Agent 在实战中沉淀">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1419;
+      --bg-card: #1a2027;
+      --bg-card-hover: #232b33;
+      --border: #2a333d;
+      --text: #e4e7eb;
+      --text-dim: #9aa3ad;
+      --accent: #7eb8da;
+      --accent-2: #d49a6a;
+      --good: #7fc88f;
+      --bad: #d97a7a;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 32px;
+      margin-bottom: 32px;
+    }
+    .hero { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+    .hero .icon { font-size: 48px; }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero .ver { font-size: 14px; color: var(--text-dim); margin-top: 4px; }
+    .tagline { color: var(--text-dim); font-size: 16px; margin-top: 4px; }
+    .badges { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .badge a { color: var(--accent); text-decoration: none; }
+    .badge a:hover { text-decoration: underline; }
+    /* Sections */
+    section { margin-bottom: 48px; }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 { font-size: 18px; margin: 24px 0 12px; color: var(--accent); }
+    /* Module cards */
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .module {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+    }
+    .module:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+    .module .emoji { font-size: 32px; margin-bottom: 8px; }
+    .module h3 { color: var(--text); margin: 0 0 6px; font-size: 16px; }
+    .module p { color: var(--text-dim); font-size: 13px; margin: 0; }
+    /* Speed lookup */
+    .lookup {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+    .lookup .q { color: var(--accent); }
+    .lookup .a { color: var(--good); margin-left: 8px; }
+    /* File tree */
+    .tree {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      margin-top: 48px;
+      color: var(--text-dim);
+      font-size: 13px;
+      text-align: center;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    /* Flow diagram */
+    .flow {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      white-space: pre;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .flow .box { color: var(--accent); }
+    /* Diff colors */
+    .good { color: var(--good); }
+    .bad { color: var(--bad); }
+    .dim { color: var(--text-dim); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="hero">
+        <div class="icon">📚</div>
+        <div>
+          <h1>Prompt Library</h1>
+          <div class="ver">v1.0 · MIT License · 23 files</div>
+        </div>
+      </div>
+      <p class="tagline">通用 prompt 模板集合，由 Hermes Agent 在实战中沉淀</p>
+      <div class="badges">
+        <span class="badge">📦 <a href="https://github.com/gordonho/prompt-library">gordonho/prompt-library</a></span>
+        <span class="badge">🤖 Hermes Agent 实战验证</span>
+        <span class="badge">🌐 中文 + 英文</span>
+        <span class="badge">📖 <a href="./tutorials/">8 个教程</a></span>
+        <span class="badge">✨ <a href="https://github.com/gordonho/prompt-library/blob/main/README.md">README</a></span>
+      </div>
+    </header>
+
+    <section>
+      <h2>📂 5 个模块</h2>
+      <div class="modules">
+
+        <a class="module" href="./prompts/general/self-reflect.html">
+          <div class="emoji">🧠</div>
+          <h3>general · self-reflect</h3>
+          <p>结构化拆解 + 自我反思。LLM 准确率 53% → 87%。主模板 + 高级版 + 极简版。</p>
+        </a>
+
+        <a class="module" href="./prompts/hermes/delegation.html">
+          <div class="emoji">🤝</div>
+          <h3>hermes · delegation</h3>
+          <p>跨 agent 委派任务模板。OpenClaw / Claude Code / Codex 都适用。</p>
+        </a>
+
+        <a class="module" href="./prompts/monitoring/watchdog.html">
+          <div class="emoji">🐕</div>
+          <h3>monitoring · watchdog</h3>
+          <p>常驻守护进程设计。Hermes ↔ OpenClaw 互救实战。</p>
+        </a>
+
+        <a class="module" href="./prompts/extraction/web-article.html">
+          <div class="emoji">🕸️</div>
+          <h3>extraction · web-article</h3>
+          <p>抓取微信文章 / 政府网站 / PDF / A 股数据。关键词监控。</p>
+        </a>
+
+        <a class="module" href="./prompts/automation/cron.html">
+          <div class="emoji">⏰</div>
+          <h3>automation · cron</h3>
+          <p>Hermes cron job 设计。定时跑脚本 + 推送到用户。</p>
+        </a>
+
+        <a class="module" href="./prompts/automation/sync-notion-obsidian.html">
+          <div class="emoji">🔄</div>
+          <h3>automation · sync</h3>
+          <p>Notion 数据库写入 + Obsidian vault 同步。双向去重。</p>
+        </a>
+
+        <a class="module" href="./prompts/automation/chat-platforms.html">
+          <div class="emoji">💬</div>
+          <h3>automation · chat-platforms</h3>
+          <p>飞书 / 企微 / Slack / Telegram 推送。多渠道 fan-out。</p>
+        </a>
+
+      </div>
+    </section>
+
+    <section>
+      <h2>🚀 30 秒找到合适的 prompt</h2>
+      <div class="lookup"><span class="q">我想问 LLM 一个问题</span>
+  <span class="a">├─ 是技术决策 / 法律 / 投资</span> <span class="bad">→</span> self-reflect <span class="dim">主模板</span>
+  <span class="a">├─ 是快问快答</span>                  <span class="bad">→</span> self-reflect <span class="dim">极简版</span>
+  <span class="a">└─ 是给本地 7B 模型</span>             <span class="bad">→</span> self-reflect <span class="dim">主模板</span>
+
+<span class="q">我要让另一个 agent 干子任务</span>
+  <span class="a">└─</span> delegation
+
+<span class="q">我要监控 / 自动重启 / 健康检查</span>
+  <span class="a">└─</span> watchdog
+
+<span class="q">我要抓网页 / PDF / 表格</span>
+  <span class="a">└─</span> web-article
+
+<span class="q">我要定时跑脚本 + 推送给用户</span>
+  <span class="a">└─</span> cron
+
+<span class="q">我要把内容存 Notion / Obsidian</span>
+  <span class="a">└─</span> sync-notion-obsidian
+
+<span class="q">我要推送到飞书 / 企微 / Slack</span>
+  <span class="a">└─</span> chat-platforms</div>
+    </section>
+
+    <section>
+      <h2>🧬 数据流（以股票推送为例）</h2>
+      <div class="flow">
+<span class="box">┌──────────┐</span>      <span class="box">┌──────────┐</span>      <span class="box">┌──────────┐</span>      <span class="box">┌──────────┐</span>
+<span class="box">│  Sina    │</span> ---> <span class="box">│  Python  │</span> ---> <span class="box">│  Hermes  │</span> ---> <span class="box">│   QQ     │</span>
+<span class="box">│  hq API  │</span>      <span class="box">│  script  │</span>      <span class="box">│  cron    │</span>      <span class="box">│   Bot    │</span>
+<span class="box">└──────────┘</span>      <span class="box">└──────────┘</span>      <span class="box">└──────────┘</span>      <span class="box">└──────────┘</span>
+     <span class="dim">实时报价</span>          <span class="dim">cron prompt</span>         <span class="dim">deliver</span>
+     <span class="dim">+ K 线</span>            <span class="dim">跑脚本</span>             <span class="dim">= qqbot</span></div>
+    </section>
+
+    <section>
+      <h2>📁 仓库结构</h2>
+      <div class="tree">prompt-library/
+├── README.md                      ← 仓库首页
+├── prompts/
+│   ├── general/
+│   │   ├── self-reflect.md        ← 主模板（87% 准确率）
+│   │   └── examples.md            ← 4 个实战案例
+│   ├── hermes/
+│   │   ├── delegation.md          ← 委派任务模板
+│   │   └── examples.md
+│   ├── monitoring/
+│   │   ├── watchdog.md            ← 守护进程设计
+│   │   └── examples.md
+│   ├── extraction/
+│   │   ├── web-article.md         ← 抓取模板
+│   │   └── examples.md
+│   └── automation/
+│       ├── cron.md                ← cron job 设计
+│       ├── sync-notion-obsidian.md ← Notion/Obsidian 同步
+│       ├── chat-platforms.md      ← IM 推送
+│       └── examples.md × 3
+└── tutorials/                     ← step-by-step 教程
+    ├── README.md
+    ├── general-self-reflect.md
+    ├── hermes-delegation.md
+    ├── monitoring-watchdog.md
+    ├── extraction-web-article.md
+    ├── automation-cron.md
+    ├── automation-sync.md
+    └── automation-chat.md</div>
+    </section>
+
+    <section>
+      <h2>🎯 实战效果</h2>
+      <div class="modules">
+        <div class="module">
+          <div class="emoji">📈</div>
+          <h3>A 股监控（6 只）</h3>
+          <p>交易日每 30 分钟推送到 QQ bot。技术面综合判定。</p>
+        </div>
+        <div class="module">
+          <div class="emoji">🎓</div>
+          <h3>广东高考投档线</h3>
+          <p>24×7 监控考试院 PTGK。新文章自动推 QQ bot。</p>
+        </div>
+        <div class="module">
+          <div class="emoji">🐕</div>
+          <h3>Hermes ↔ OpenClaw watchdog</h3>
+          <p>5 次连续失败触发 kickstart。冷却 5 分钟。已实战救活。</p>
+        </div>
+        <div class="module">
+          <div class="emoji">📱</div>
+          <h3>微信公众号抓取</h3>
+          <p>解析 og:title / nickname / publish_time。关键词高亮。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>📜 设计原则</h2>
+      <ol style="padding-left: 24px; color: var(--text-dim);">
+        <li><strong style="color: var(--good)">实战验证</strong> · 每个模板都来自真实 Hermes Agent 使用场景</li>
+        <li><strong style="color: var(--good)">可复用</strong> · 不依赖特定工具，复制即可用</li>
+        <li><strong style="color: var(--good)">结构化</strong> · 都有 输入 / 输出 / 限制 三个明确段</li>
+        <li><strong style="color: var(--good)">反例丰富</strong> · 标出"不要做什么"，避免踩坑</li>
+        <li><strong style="color: var(--good)">MIT 协议</strong> · 自由使用、修改、再发布</li>
+      </ol>
+    </section>
+
+    <footer>
+      Made with ❤️ by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a>
+      ·
+      <a href="https://github.com/gordonho/prompt-library">GitHub</a>
+      ·
+      <a href="./tutorials/">Tutorials</a>
+      ·
+      <a href="https://github.com/gordonho/prompt-library/blob/main/README.md">README</a>
+    </footer>
+  </div>
+</body>
+</html>
