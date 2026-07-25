@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🕸️ web-article · Prompt Library</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>🕸️ extraction / web-article</h1>
+      <p>抓取微信文章 / 政府网站 / PDF / A 股数据。关键词监控。</p>
+      <div class="badges">
+        <span class="badge">⭐⭐ 进阶</span>
+        <span class="badge">🐍 Python</span>
+        <span class="badge">📰 微信公众号</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>📌 何时用</h2>
+      <ul>
+        <li>✅ 抓微信公众号文章（mp.weixin.qq.com）</li>
+        <li>✅ 抓政府 / 考试院 / 高校官网</li>
+        <li>✅ PDF 表格抽取（pdftotext + 解析）</li>
+        <li>✅ A 股实时数据 + 技术指标</li>
+        <li>✅ 监控关键词 + 推送</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🔑 公众号文章的关键技巧</h2>
+      <p>微信公众号文章抓取有 3 个常见坑：</p>
+      <table>
+        <tr><th>字段</th><th>陷阱</th><th>正确姿势</th></tr>
+        <tr><td>标题</td><td>用 <code>&lt;title&gt;</code> 抓到的是 description</td><td>用 <code>&lt;meta og:title&gt;</code></td></tr>
+        <tr><td>公众号昵称</td><td>JSON-escaped: <code>nickname=\x22...\x22</code></td><td>正则匹配 <code>nickname=\\x22([^\\]+)\\x22</code></td></tr>
+        <tr><td>发布时间</td><td>URL-encoded: <code>%22publish_time%22%3A1784346712%7D</code></td><td>正则匹配 <code>%22publish_time%22%3A(\d{10})</code></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>📊 A 股 Sina API</h2>
+      <pre class="code"><code># 实时
+GET https://hq.sinajs.cn/list=sh600036,sz002001
+
+# K 线 (60 天)
+GET http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/
+    CN_MarketData.getKLineData?symbol=sh600036&scale=240&ma=no&datalen=60</code></pre>
+    </section>
+
+    <section>
+      <h2>🔑 政府网站的列表结构</h2>
+      <p>典型结构（如广东考试院 eea.gd.gov.cn）：</p>
+      <pre class="code"><code>&lt;ul class="list"&gt;
+  &lt;li&gt;&lt;a href="https://eea.gd.gov.cn/ptgk/content/post_XXX.html"&gt;
+    &lt;span class="line"&gt;&lt;/span&gt;标题&lt;/a&gt;
+    &lt;span class="time"&gt;2026-07-16&lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <p>注意 URL 是**完整**不是相对路径。</p>
+    </section>
+
+    <section>
+      <h2>📖 完整文档</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/extraction/web-article.md">GitHub: prompts/extraction/web-article.md</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/extraction/examples.md">examples.md</a></li>
+        <li><a href="../../tutorials/extraction-web-article.html">使用教程</a></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

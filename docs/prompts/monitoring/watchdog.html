@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐕 watchdog · Prompt Library</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>🐕 monitoring / watchdog</h1>
+      <p>常驻守护进程设计。Hermes ↔ OpenClaw 互救实战。</p>
+      <div class="badges">
+        <span class="badge">⭐⭐ 进阶</span>
+        <span class="badge">🐍 Python</span>
+        <span class="badge">🚀 launchd</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>📌 何时用</h2>
+      <ul>
+        <li>✅ 跑了关键服务（Hermes 网关 / 数据库 / 队列）</li>
+        <li>✅ launchd KeepAlive 不够（不能救 OOM / JS hang）</li>
+        <li>✅ 想要"静默优先"（失败才推用户）</li>
+        <li>❌ 普通 cron（用 <a href="cron.html">cron</a> 模板）</li>
+        <li>❌ 一次性任务</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🚀 设计骨架</h2>
+      <pre class="code"><code># 配置
+PEERS = {
+    "hermes":   {"launchd": "ai.hermes.gateway", "cli": ["<abs path>", "status"]},
+    "openclaw": {"launchd": "ai.openclaw.gateway", "url": "http://127.0.0.1:18789/health"},
+}
+INTERVAL = 60        # 秒
+THRESHOLD = 5        # 累计失败次数
+COOLDOWN = 300       # 重启后冷却（秒）
+
+while True:
+    sleep(INTERVAL)
+    for name, peer in PEERS.items():
+        if in_cooldown(name): continue
+        if probe(peer):
+            reset_fails(name)
+        else:
+            fails += 1
+            if fails >= THRESHOLD:
+                launchctl kickstart -k gui/$UID/&lt;label&gt;
+                cooldown(name, COOLDOWN)
+                fails = 0</code></pre>
+    </section>
+
+    <section>
+      <h2>🔑 关键设计</h2>
+      <table>
+        <tr><th>原则</th><th>理由</th></tr>
+        <tr><td>用 launchd 拉 watchdog 本身</td><td>watchdog 死了还能拉起来</td></tr>
+        <tr><td>用绝对路径调 CLI</td><td>launchd 进程 PATH 不含用户 venv</td></tr>
+        <tr><td>累计阈值才重启</td><td>单次失败可能是网络抖动</td></tr>
+        <tr><td>重启后冷却</td><td>防止连环重启</td></tr>
+        <tr><td>成功时完全静默</td><td>不污染用户通知</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>📜 launchd plist</h2>
+      <pre class="code"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+&lt;dict&gt;
+  &lt;key&gt;Label&lt;/key&gt;&lt;string&gt;com.example.mywatch&lt;/string&gt;
+  &lt;key&gt;ProgramArguments&lt;/key&gt;
+  &lt;array&gt;
+    &lt;string&gt;/usr/bin/env&lt;/string&gt;
+    &lt;string&gt;python3&lt;/string&gt;
+    &lt;string&gt;/path/to/mywatch.py&lt;/string&gt;
+  &lt;/array&gt;
+  &lt;key&gt;RunAtLoad&lt;/key&gt;&lt;true/&gt;
+  &lt;key&gt;KeepAlive&lt;/key&gt;
+  &lt;dict&gt;
+    &lt;key&gt;SuccessfulExit&lt;/key&gt;&lt;false/&gt;
+    &lt;key&gt;Crashed&lt;/key&gt;&lt;true/&gt;
+  &lt;/dict&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;</code></pre>
+    </section>
+
+    <section>
+      <h2>📈 实战效果</h2>
+      <p>Hemes ↔ OpenClaw watchdog 已稳定运行数日：</p>
+      <pre class="code"><code>13:07:46  Hermes failed probe (5/5)
+13:07:46  Hermes triggering force restart
+13:07:47  Hermes kickstart dispatched
+13:09:48  checking Hermes     elapsed=62607
+13:09:48  checking OpenClaw   elapsed=62607</code></pre>
+      <p>launchd 没救回来时 watchdog 救活。</p>
+    </section>
+
+    <section>
+      <h2>📖 完整文档</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/monitoring/watchdog.md">GitHub: prompts/monitoring/watchdog.md</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/monitoring/examples.md">examples.md</a></li>
+        <li><a href="../../tutorials/monitoring-watchdog.html">使用教程</a></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

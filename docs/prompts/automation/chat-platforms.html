@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💬 chat-platforms · Prompt Library</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>💬 automation / chat-platforms</h1>
+      <p>飞书 / 企微 / Slack / Telegram / Discord 推送。</p>
+      <div class="badges">
+        <span class="badge">⭐⭐ 进阶</span>
+        <span class="badge">🦊 飞书</span>
+        <span class="badge">💼 企微</span>
+        <span class="badge">💬 Slack</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>📌 何时用</h2>
+      <ul>
+        <li>✅ 需要把脚本输出推送到多个平台</li>
+        <li>✅ 要给企业团队建机器人</li>
+        <li>✅ CI/CD 通知</li>
+        <li>❌ 给个人微信推（用 QQ bot 或 iLink）</li>
+        <li>❌ 不需要通知（用 cron local）</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>📊 平台速查</h2>
+      <table>
+        <tr><th>平台</th><th>Markdown</th><th>限制</th></tr>
+        <tr><td>飞书</td><td>lark_md（最丰富）</td><td>30KB / 条</td></tr>
+        <tr><td>企微</td><td>有限（不支持表格）</td><td>4KB / 条</td></tr>
+        <tr><td>Slack</td><td>mrkdwn（<code>*bold*</code>）</td><td>40KB / 条</td></tr>
+        <tr><td>Telegram</td><td>MarkdownV2（需转义）</td><td>4096 char</td></tr>
+        <tr><td>Discord</td><td>markdown</td><td>2000 char</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>🦊 飞书（卡片推送）</h2>
+      <pre class="code"><code>curl -X POST "$FEISHU_WEBHOOK" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg c "$MSG" '{
+    msg_type: "interactive",
+    card: {
+      header: {
+        title: {tag: "plain_text", content: "标题"},
+        template: "blue"
+      },
+      elements: [
+        {tag: "div", text: {tag: "lark_md", content: $c}},
+        {tag: "hr"},
+        {tag: "note", elements: [{tag: "plain_text", content: "Hermes Agent"}]}
+      ]
+    }
+  }')"</code></pre>
+    </section>
+
+    <section>
+      <h2>💼 企微（无表格）</h2>
+      <p>企微 markdown 不支持表格。需要先转列表：</p>
+      <pre class="code"><code>def table_to_list(table_md):
+    """markdown 表格 → 企微兼容列表"""
+    lines = table_md.split("\n")
+    rows = [l for l in lines if l.startswith("|") and "---" not in l]
+    headers = [h.strip() for h in rows[0].split("|") if h.strip()]
+    items = []
+    for r in rows[1:]:
+        cells = [c.strip() for c in r.split("|") if c.strip()]
+        item = "".join(f"**{h}**: {c}\n" for h, c in zip(headers, cells))
+        items.append(item)
+    return "\n---\n".join(items)</code></pre>
+    </section>
+
+    <section>
+      <h2>💬 Slack（mrkdwn 不是 markdown）</h2>
+      <table>
+        <tr><th>普通 markdown</th><th>Slack</th></tr>
+        <tr><td><code>**bold**</code></td><td><code>*bold*</code></td></tr>
+        <tr><td><code>*italic*</code></td><td><code>_italic_</code></td></tr>
+        <tr><td><code>~~strikethrough~~</code></td><td><code>~strikethrough~</code></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>⚠️ 安全提示</h2>
+      <ul>
+        <li>Webhook URL <strong>不要提交到 git</strong> — 用 <code>.env</code></li>
+        <li>测试 webhook 不要发到生产群</li>
+        <li>大批量推送要分批，每批间隔 5-10s</li>
+        <li>消息超限要截断或分块（飞书 30KB / 企微 4KB）</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>📖 完整文档</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/automation/chat-platforms.md">GitHub: prompts/automation/chat-platforms.md</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/automation/chat-examples.md">chat-examples.md</a></li>
+        <li><a href="../../tutorials/automation-chat.html">使用教程</a></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

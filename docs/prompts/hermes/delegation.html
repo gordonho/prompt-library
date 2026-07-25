@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🤝 delegation · Prompt Library</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../../index.html">← 返回首页</a>
+    <header>
+      <h1>🤝 hermes / delegation</h1>
+      <p>跨 agent 委派任务模板。OpenClaw / Claude Code / Codex 都适用。</p>
+      <div class="badges">
+        <span class="badge">⭐⭐ 进阶</span>
+        <span class="badge">⏱️ 30 秒上手</span>
+        <span class="badge">🤖 Hermes + 子 agents</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>📌 何时用</h2>
+      <ul>
+        <li>✅ 需要另一个 agent 干"脏活"（长跑 cron、大文件扫描、复杂代码生成）</li>
+        <li>✅ 保持主对话简洁，让子 agent 在后台跑</li>
+        <li>✅ 并行多个子任务</li>
+        <li>❌ 任务 < 30 秒能搞定（直接做）</li>
+        <li>❌ 信息严重依赖上下文（直接做）</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🚀 主模板</h2>
+      <pre class="code"><code># 角色
+你是 [OpenClaw main agent / Claude Code / Codex / 其他]。
+
+# 上下文
+[简要说明任务背景]
+
+# 目标
+[清楚地说明要达成什么]
+
+# 约束
+- [约束 1：如必须用 Python 3.11+]
+- [约束 2：如不能改 git 分支]
+- [约束 3：如时间预算 < 30s]
+
+# 输出格式
+- [要求 1：仅返回 JSON / 仅返回文本 / 需要文件路径]
+- [要求 2：解释 / 不解释 / 简短理由]
+
+# 不要做的事
+- 不要调 [某种工具]
+- 不要碰 [某个文件/目录]
+
+# 完成度自检
+跑完后，自己检查一遍：
+- [ ] 目标达成？
+- [ ] 没有违反约束？
+- [ ] 输出符合格式？
+
+如果有遗漏，自己补；实在做不到，**明确告知失败原因**，不要瞎编。</code></pre>
+    </section>
+
+    <section>
+      <h2>🔧 实战工具</h2>
+      <table>
+        <tr><th>目标 agent</th><th>调用方式</th></tr>
+        <tr><td>OpenClaw main</td><td><code>~/.local/bin/claw --agent main --message "..."</code></td></tr>
+        <tr><td>OpenClaw coding-assistant</td><td><code>claw --agent coding-assistant --message "..."</code></td></tr>
+        <tr><td>Claude Code</td><td>Hermes 的 <code>delegate_task(goal, context, model)</code></td></tr>
+        <tr><td>Codex</td><td>同上，<code>model="gpt-4"</code></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>💡 5 条设计原则</h2>
+      <ol>
+        <li><strong>明确角色</strong> — "你是 X agent"</li>
+        <li><strong>明确上下文</strong> — 子 agent 不知道之前聊过</li>
+        <li><strong>明确目标</strong> — 含糊会失败</li>
+        <li><strong>明确约束</strong> — "不要碰 git / 不要超时"</li>
+        <li><strong>明确输出格式</strong> — "返回 JSON / 简短 / 完整"</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>📖 完整文档</h2>
+      <ul>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/hermes/delegation.md">GitHub: prompts/hermes/delegation.md</a></li>
+        <li><a href="https://github.com/gordonho/prompt-library/blob/main/prompts/hermes/examples.md">examples.md</a></li>
+        <li><a href="../../tutorials/hermes-delegation.html">使用教程</a></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
